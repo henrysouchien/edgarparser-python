@@ -15,9 +15,9 @@ print(client)
 
 ## Status
 
-This package is being implemented in the EdgarParser source repo and is not
-published yet. The current local package exports `EdgarClient`, typed SDK
-errors, and the first v1 hosted-API endpoint methods.
+`edgarparser-sdk` is published on PyPI as the first-party Python client for the
+hosted EdgarParser API. The package exports `EdgarClient`, typed SDK errors,
+and the first v1 hosted-API endpoint methods.
 
 ## Package Boundary
 

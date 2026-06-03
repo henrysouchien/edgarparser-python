@@ -20,7 +20,7 @@ def test_client_defaults(monkeypatch: pytest.MonkeyPatch) -> None:
 
     assert client.base_url == DEFAULT_BASE_URL
     assert client.timeout == DEFAULT_TIMEOUT
-    assert client.headers() == {"User-Agent": "edgarparser-sdk/0.1.0"}
+    assert client.headers() == {"User-Agent": "edgarparser-sdk/0.1.1"}
     assert "api_key=<unset>" in repr(client)
 
 

@@ -1,0 +1,46 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "edgarparser-sdk"
+dynamic = ["version"]
+description = "Python SDK for the hosted EdgarParser SEC filings API"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+dependencies = [
+    "requests>=2.31.0",
+]
+
+[project.urls]
+Homepage = "https://www.edgarparser.com"
+Documentation = "https://docs.edgarparser.com"
+"Hosted API" = "https://www.edgarparser.com"
+"Tool Reference" = "https://docs.edgarparser.com/tools"
+Source = "https://github.com/henrysouchien/edgarparser-python"
+Issues = "https://github.com/henrysouchien/edgarparser-python/issues"
+
+[project.optional-dependencies]
+dev = [
+    "build",
+    "pytest",
+    "PyYAML",
+    "twine",
+]
+
+[tool.hatch.version]
+path = "src/edgarparser/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/edgarparser"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/edgarparser/",
+    "examples/",
+    "pyproject.toml",
+    "README.md",
+    "LICENSE",
+    "tests/",
+]

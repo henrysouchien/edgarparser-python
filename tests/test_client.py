@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from edgarparser import DEFAULT_BASE_URL, DEFAULT_TIMEOUT, EdgarClient, EdgarError
+from edgarparser import DEFAULT_BASE_URL, DEFAULT_TIMEOUT, EdgarClient, EdgarError, __version__
 
 
 class RecordingSession:
@@ -20,7 +20,7 @@ def test_client_defaults(monkeypatch: pytest.MonkeyPatch) -> None:
 
     assert client.base_url == DEFAULT_BASE_URL
     assert client.timeout == DEFAULT_TIMEOUT
-    assert client.headers() == {"User-Agent": "edgarparser-sdk/0.1.2"}
+    assert client.headers() == {"User-Agent": f"edgarparser-sdk/{__version__}"}
     assert "api_key=<unset>" in repr(client)
 
 

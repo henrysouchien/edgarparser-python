@@ -15,6 +15,7 @@ from edgarparser import (
     EdgarTimeoutError,
     EdgarTransportError,
     EdgarValidationError,
+    __version__,
 )
 
 
@@ -86,7 +87,7 @@ def test_request_builds_url_headers_params_body_and_timeout() -> None:
             "method": "GET",
             "url": "https://api.example.com/api/test",
             "headers": {
-                "User-Agent": "edgarparser-sdk/0.1.2",
+                "User-Agent": f"edgarparser-sdk/{__version__}",
                 "Authorization": "Bearer secret-key",
             },
             "params": {"ticker": "AAPL"},

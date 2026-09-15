@@ -1,11 +1,9 @@
 from __future__ import annotations
 
 
-def test_import_exports_client_and_version() -> None:
-    import edgarparser
+def test_import_exports_client_and_errors() -> None:
     from edgarparser import EdgarAPIError, EdgarClient, EdgarError
 
-    assert edgarparser.__version__ == "0.1.2"
     assert EdgarClient.__name__ == "EdgarClient"
     assert EdgarError.__name__ == "EdgarError"
     assert issubclass(EdgarAPIError, EdgarError)

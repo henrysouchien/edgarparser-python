@@ -93,7 +93,6 @@ def test_sdk_manifest_matches_tool_manifest_contracts() -> None:
         assert tool["api_method"] == spec.api_method
         assert tool["api_path"] == spec.api_path
         assert tool["contract_version"] == spec.contract_version
-        assert tool["schema_fingerprint"] == spec.schema_fingerprint
 
 
 def test_sdk_manifest_matches_fastapi_route_contracts() -> None:

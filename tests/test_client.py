@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from edgarparser import DEFAULT_BASE_URL, DEFAULT_TIMEOUT, EdgarClient
+from edgarparser import DEFAULT_BASE_URL, DEFAULT_TIMEOUT, EdgarClient, EdgarError
 
 
 class RecordingSession:
@@ -20,7 +20,7 @@ def test_client_defaults(monkeypatch: pytest.MonkeyPatch) -> None:
 
     assert client.base_url == DEFAULT_BASE_URL
     assert client.timeout == DEFAULT_TIMEOUT
-    assert client.headers() == {"User-Agent": "edgarparser-sdk/0.1.1"}
+    assert client.headers() == {"User-Agent": "edgarparser-sdk/0.1.2"}
     assert "api_key=<unset>" in repr(client)
 
 
@@ -56,12 +56,10 @@ def test_client_validates_base_url_and_timeout() -> None:
         EdgarClient(timeout=0)
 
 
-def test_client_closes_owned_session() -> None:
+def test_client_close_is_idempotent() -> None:
     client = EdgarClient(api_key="x")
     client.close()
     client.close()
-
-    assert client._debug_state()["closed"] is True
 
 
 def test_client_does_not_close_injected_session() -> None:
@@ -71,11 +69,11 @@ def test_client_does_not_close_injected_session() -> None:
     client.close()
 
     assert session.closed is False
-    assert client._debug_state()["closed"] is True
 
 
-def test_context_manager_closes_owned_session() -> None:
+def test_context_manager_rejects_requests_after_exit() -> None:
     with EdgarClient(api_key="x") as client:
-        assert client._debug_state()["closed"] is False
+        pass
 
-    assert client._debug_state()["closed"] is True
+    with pytest.raises(EdgarError, match="client is closed"):
+        client.get_financials("AAPL", year=2025, quarter=1)

@@ -2,6 +2,10 @@
 
 Python SDK for the hosted EdgarParser API.
 
+**Status:** Living reference  
+**Current authority:** `packages/edgarparser/src/edgarparser/` (`client.py`, `__init__.py`, `_manifest.py`) and `packages/edgarparser/pyproject.toml`  
+**Last verified:** 2026-07-29
+
 ```bash
 pip install edgarparser-sdk
 ```
@@ -17,7 +21,7 @@ print(client)
 
 `edgarparser-sdk` is published on PyPI as the first-party Python client for the
 hosted EdgarParser API. The package exports `EdgarClient`, typed SDK errors,
-and the first v1 hosted-API endpoint methods.
+and the v1 hosted-API endpoint methods listed below.
 
 ## Package Boundary
 
@@ -50,7 +54,8 @@ from edgarparser import EdgarClient
 client = EdgarClient()
 ```
 
-Use `base_url` for staging or local API testing:
+Default `base_url` is `https://www.edgarparser.com`. Override it for staging
+or local API testing:
 
 ```python
 client = EdgarClient(api_key="edgar_...", base_url="http://127.0.0.1:8000")

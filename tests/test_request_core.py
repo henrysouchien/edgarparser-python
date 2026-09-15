@@ -86,7 +86,7 @@ def test_request_builds_url_headers_params_body_and_timeout() -> None:
             "method": "GET",
             "url": "https://api.example.com/api/test",
             "headers": {
-                "User-Agent": "edgarparser-sdk/0.1.1",
+                "User-Agent": "edgarparser-sdk/0.1.2",
                 "Authorization": "Bearer secret-key",
             },
             "params": {"ticker": "AAPL"},

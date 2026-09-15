@@ -468,17 +468,6 @@ class EdgarClient:
             ")"
         )
 
-    def _debug_state(self) -> dict[str, Any]:
-        """Return non-secret state for tests and diagnostics."""
-
-        return {
-            "base_url": self.base_url,
-            "timeout": self.timeout,
-            "api_key_set": bool(self.api_key),
-            "closed": self._closed,
-            "user_agent": self.user_agent,
-        }
-
     def _url(self, path: str) -> str:
         if not path or not path.strip():
             raise ValueError("path must be a non-empty API path")
@@ -555,7 +544,7 @@ class EdgarClient:
     ) -> EdgarAPIError:
         payload = self._response_json(response)
         message = f"HTTP {response.status_code}"
-        error_type: str | None = self._default_error_type(response.status_code)
+        error_cls, error_type = self._error_classification(response.status_code)
         details: Any | None = None
 
         if isinstance(payload, Mapping):
@@ -575,7 +564,6 @@ class EdgarClient:
                 message = text[:300]
                 details = self._text_details(text)
 
-        error_cls = self._error_class(response.status_code)
         return error_cls(
             response.status_code,
             message,
@@ -604,27 +592,18 @@ class EdgarClient:
             return {**details, "cta": payload["cta"]}
         return {"details": details, "cta": payload["cta"]}
 
-    def _default_error_type(self, status_code: int) -> str | None:
-        if status_code == 429:
-            return "rate_limit"
-        if status_code in {400, 422}:
-            return "validation_error"
+    def _error_classification(
+        self, status_code: int
+    ) -> tuple[type[EdgarAPIError], str | None]:
         if status_code in {401, 403}:
-            return "auth_error"
-        if status_code == 404:
-            return "not_found"
-        return None
-
-    def _error_class(self, status_code: int) -> type[EdgarAPIError]:
-        if status_code in {401, 403}:
-            return EdgarAuthError
+            return EdgarAuthError, "auth_error"
         if status_code == 429:
-            return EdgarRateLimitError
+            return EdgarRateLimitError, "rate_limit"
         if status_code == 404:
-            return EdgarNotFoundError
+            return EdgarNotFoundError, "not_found"
         if status_code in {400, 422}:
-            return EdgarValidationError
-        return EdgarAPIError
+            return EdgarValidationError, "validation_error"
+        return EdgarAPIError, None
 
     def _text_details(self, text: str) -> dict[str, str] | None:
         if not text:
